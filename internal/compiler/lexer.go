@@ -60,7 +60,7 @@ func (l *LexerSimple) NextToken() Token {
 	case c == ' ' || c == '\n' || c == '\t':
 		l.consumeWhiteSpace()
 		return l.NextToken()
-	case c == ',' || c == ';' || c == '*' || c == '(' || c == ')' || c == '\'':
+	case c == ',' || c == ';' || c == '*' || c == '(' || c == ')' || c == '\n':
 		l.position++
 		return Token{Type: TokenSymbol, value: string(c)}
 	case isLetter(c) || isNumber(c):

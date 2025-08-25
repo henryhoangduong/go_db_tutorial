@@ -21,5 +21,5 @@ func NewCompiler(sqlText string) Compiler {
 
 func (comp *compiler) Call() []Token {
 	comp.parser.ParseStatement()
-	return comp.parser.Tokens
+	return comp.parser.GetTokens()
 }

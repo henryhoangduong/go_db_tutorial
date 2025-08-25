@@ -2,6 +2,7 @@ package compiler
 
 type Parser interface {
 	ParseStatement()
+	GetTokens() []Token
 }
 
 type ParserSimple struct {
@@ -11,6 +12,10 @@ type ParserSimple struct {
 
 func NewParser(l Lexer) Parser {
 	return &ParserSimple{lexer: l, Tokens: []Token{}}
+}
+
+func (p *ParserSimple) GetTokens() []Token {
+	return p.Tokens
 }
 
 func (p *ParserSimple) ParseStatement() {
