@@ -30,7 +30,7 @@ func NewLexer(str string) *LexerSimple {
 }
 
 func (l *LexerSimple) consumeWhiteSpace() {
-	for l.position < len(l.input) && (l.input == " " || l.input == "\n" || l.input == "\t") {
+	for l.position < len(l.input) && (l.input[l.position] == ' ' || l.input[l.position] == '\n' || l.input[l.position] == '\t') {
 		l.position++
 	}
 }
@@ -55,6 +55,7 @@ func (l *LexerSimple) NextToken() Token {
 	if l.position >= len(l.input) {
 		return Token{Type: TokenEOF, value: ""}
 	}
+
 	c := l.input[l.position]
 	switch {
 	case c == ' ' || c == '\n' || c == '\t':

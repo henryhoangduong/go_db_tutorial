@@ -4,6 +4,8 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+
+	"github.com/henryhoangduong/go_db_tutorial/internal/compiler"
 )
 
 type REPL interface {
@@ -20,7 +22,7 @@ func New() REPL {
 func (r *replStruct) StartREPL() {
 	reader := bufio.NewReader(os.Stdin)
 	for {
-		fmt.Print(">> ")
+		fmt.Print("DB >> ")
 		input, err := reader.ReadString('\n')
 		if err != nil {
 			fmt.Printf("Error reading input: %v \n", err)
@@ -36,5 +38,7 @@ func (r *replStruct) StartREPL() {
 }
 
 func (r *replStruct) evaluate(str string) {
-	fmt.Println("Output ", str)
+	comp := compiler.NewCompiler(str)
+	t := comp.Call()
+	fmt.Println("Output ", t)
 }
