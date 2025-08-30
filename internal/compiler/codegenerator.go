@@ -30,7 +30,40 @@ func stringToStringPtr(s string) *string {
 	return &s
 }
 func (g *generator) generateCodeInsert(tokens []Token) *models.ByteCode {
+	var bt *models.ByteCode
+	ints := []models.ByteCodeValue{
+		{
+			Type:       models.ByteCodeOperationTypeInsert,
+			Identifier: stringToStringPtr("SELECT"),
+		},
+	}
+	varNames := []models.ByteCodeValue{}
+	i := 1
+	for i < len(tokens) {
+		if tokens[i].Type == TokenIdentifier {
+			v := models.ByteCodeValue{
+				Type:       models.ByteCodeOperationTypeIdentifier,
+				Identifier: stringToStringPtr(tokens[i].value),
+			}
+			varNames = append(varNames, v)
+		}
+		i++
+	}
+	i++
+	tblName:= ByteCodeValue{
+		Type:  ByteCodeOperationTypeTableName,
+		Identifier: stringToStringPtr(tokens[i].value)
+	}
+	countVarNames:= ByteCodeValue{
+		Type: ByteCodeOperationTypeCount,
+		Count: len(varNames),
+	}
 
+	ints:= append(ints, tblName)
+	ints:=append(ints, countVarNames)
+	ints:=append(ints, varNames...)
+	bt.Instructions=ints
+	return bt
 }
 func (g *generator) generateCodeSelect(tokens []Token) *models.ByteCode {
 	var bt *models.ByteCode
@@ -68,5 +101,7 @@ func (g *generator) generateCodeSelect(tokens []Token) *models.ByteCode {
 	ints = append(ints, tblName)
 	ints = append(ints, countVarNams)
 	ints = append(ints, varNames...)
+
+	bt.Instructions=ints
 	return bt
 }
