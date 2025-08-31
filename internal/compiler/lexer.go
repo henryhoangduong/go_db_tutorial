@@ -1,5 +1,7 @@
 package compiler
 
+import "strings"
+
 type TokenType int
 
 const (
@@ -47,8 +49,17 @@ func (l *LexerSimple) consumeIdentifier() Token {
 	for l.position < len(l.input) && (isLetter(l.input[l.position]) || isNumber(l.input[l.position])) {
 		l.position++
 	}
+	t := TokenIdentifier
 	value := l.input[start:l.position]
-	return Token{Type: TokenIdentifier, value: value}
+	if strings.ToUpper(value) == "SELECT" ||
+		strings.ToUpper(value) == "INSERT" ||
+		strings.ToUpper(value) == "INTO" ||
+		strings.ToUpper(value) == "VALUES" ||
+		strings.ToUpper(value) == "FROM" ||
+		strings.ToUpper(value) == "WHERE" {
+		t = TokenKeyword
+	}
+	return Token{Type: t, value: value}
 }
 
 func (l *LexerSimple) NextToken() Token {

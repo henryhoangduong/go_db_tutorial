@@ -39,6 +39,8 @@ func (r *replStruct) StartREPL() {
 
 func (r *replStruct) evaluate(str string) {
 	comp := compiler.NewCompiler(str)
-	t := comp.Call()
-	fmt.Println("Output ", t)
+	bt := comp.Call()
+	for _, v := range bt.Instructions {
+		fmt.Println("Output ", v)
+	}
 }
